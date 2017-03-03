@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'sinatra'
+gem 'sinatra-websocket'
 gem 'thin'
 gem 'rack', '~> 1.6', '>= 1.6.5'

@@ -1,6 +1,56 @@
 <html>
 <head><title>test</title></head>
 <body>
-test
+   <h1>Simple Echo &amp; Chat Server</h1>
+   <form id="register">
+     <input type="text" id="company_id" value="company_id"></input>
+     <input type="submit" value="register">
+   </form>
+   <form id="messages" style="display:none">
+     <input type="text" id="message" value="send a message"></input>
+     <input type="submit" value="send">
+   </form>
+   <div id="msgs"></div>
 </body>
+
+<script type="text/javascript">
+  window.onload = function(){
+    (function(){
+      var show = function(el){
+        return function(msg){ el.innerHTML = el.innerHTML + '<br />- ' + msg; }
+      }(document.getElementById('msgs'));
+
+      var ws       = new WebSocket('ws://' + window.location.host + '/websocket');
+      ws.onopen    = function()  { show('websocket connection opened'); };
+      ws.onclose   = function()  { show('websocket connection closed'); }
+      ws.onmessage = function(m) {
+        if(/^registration ok/.test(m.data)){
+          document.getElementById('messages').style.display = 'block'
+        }
+        show('message received: ' +  m.data);
+      };
+
+      var register = function(f){
+        var company_id = document.getElementById('company_id');
+        company_id.onclick = function(){ company_id.value = "" };
+        f.onsubmit    = function(){
+          message="registering:"+company_id.value
+          ws.send(message);
+          show('message sent: ' + message)
+          return false;
+        }
+      }(document.getElementById('register'));
+
+      var messages = function(f){
+        var message = document.getElementById('message');
+        message.onclick = function(){ message.value = "" };
+        f.onsubmit    = function(){
+          ws.send(message.value);
+          show('message sent: ' + message.value)
+          return false;
+        }
+      }(document.getElementById('messages'));
+    })();
+  }
+</script>
 </html>
