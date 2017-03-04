@@ -17,19 +17,23 @@
   window.onload = function(){
     (function(){
       var show = function(el){
-        return function(msg){ el.innerHTML = el.innerHTML + '<br />- ' + msg; }
+        return function(msg){ el.innerHTML = el.innerHTML + '<br />' + new Date().toISOString() + ' - ' + msg; }
       }(document.getElementById('msgs'));
 
+      // Create the websocket connection
       var ws       = new WebSocket('ws://' + window.location.host + '/websocket');
       ws.onopen    = function()  { show('websocket connection opened'); };
       ws.onclose   = function()  { show('websocket connection closed'); }
       ws.onmessage = function(m) {
+        // If the registration was successfull show the message dialog
         if(/^registration ok/.test(m.data)){
           document.getElementById('messages').style.display = 'block'
         }
+
         show('message received: ' +  m.data);
       };
 
+      // Handle registration
       var register = function(f){
         var company_id = document.getElementById('company_id');
         company_id.onclick = function(){ company_id.value = "" };
@@ -41,6 +45,7 @@
         }
       }(document.getElementById('register'));
 
+      // Handle message sending
       var messages = function(f){
         var message = document.getElementById('message');
         message.onclick = function(){ message.value = "" };

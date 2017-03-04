@@ -4,10 +4,14 @@ GEM
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
     daemons (1.2.4)
+    em-hiredis (0.3.1)
+      eventmachine (~> 1.0)
+      hiredis (~> 0.6.0)
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     eventmachine (1.2.3)
+    hiredis (0.6.1)
     public_suffix (2.0.5)
     rack (1.6.5)
     rack-protection (1.5.3)
@@ -30,6 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  em-hiredis (~> 0.3.1)
   rack (~> 1.6, >= 1.6.5)
   sinatra
   sinatra-websocket
