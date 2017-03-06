@@ -64,6 +64,10 @@ class WebsocketApp < Sinatra::Base
     send_file 'public/index.html'
   end
 
+  get '/healthcheck' do
+    'All good'
+  end
+
   get '/websocket' do
     if !request.websocket?
       send_file 'public/index.html'
